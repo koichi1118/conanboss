@@ -11,7 +11,7 @@ export default async function handler(request, response) {
     return response.status(500).json({ error: 'API Key not configured' });
   }
 
-  const geminiApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+  const geminiApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
 
   try {
     const { characterName } = request.body; // クライアントからのリクエストボディを解析
