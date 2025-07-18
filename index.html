@@ -418,145 +418,144 @@
             }
         });
 
-        // Gemini API integration for generating theories
-        document.getElementById('generateTheoryBtn').addEventListener('click', async () => {
-            const characterName = document.getElementById('characterNameInput').value.trim();
-            const theoryOutput = document.getElementById('theoryOutput');
-            const theoryTitle = document.getElementById('theoryTitle');
-            const positiveReasonsList = document.getElementById('positiveReasons');
-            const negativeReasonsList = document.getElementById('negativeReasons');
-            const loadingIndicator = document.getElementById('loadingIndicator');
-            const theoryContent = document.getElementById('theoryContent');
+      // Gemini API integration for generating theories
+document.getElementById('generateTheoryBtn').addEventListener('click', async () => {
+    const characterName = document.getElementById('characterNameInput').value.trim();
+    const theoryOutput = document.getElementById('theoryOutput');
+    const theoryTitle = document.getElementById('theoryTitle');
+    const positiveReasonsList = document.getElementById('positiveReasons');
+    const negativeReasonsList = document.getElementById('negativeReasons');
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    const theoryContent = document.getElementById('theoryContent');
 
-            if (!characterName) {
-                theoryOutput.classList.remove('hidden');
-                theoryTitle.textContent = 'エラー';
-                positiveReasonsList.innerHTML = '';
-                negativeReasonsList.innerHTML = '<li>キャラクター名を入力してください。</li>';
-                theoryContent.classList.remove('hidden');
-                loadingIndicator.classList.add('hidden');
-                return;
-            }
+    if (!characterName) {
+        theoryOutput.classList.remove('hidden');
+        theoryTitle.textContent = 'エラー';
+        positiveReasonsList.innerHTML = '';
+        negativeReasonsList.innerHTML = '<li>キャラクター名を入力してください。</li>';
+        theoryContent.classList.remove('hidden');
+        loadingIndicator.classList.add('hidden');
+        return;
+    }
 
-            theoryOutput.classList.remove('hidden');
-            theoryContent.classList.add('hidden');
-            loadingIndicator.classList.remove('hidden');
-            theoryTitle.textContent = `${characterName}が「あの方」だった場合`;
-            positiveReasonsList.innerHTML = '';
-            negativeReasonsList.innerHTML = '';
+    theoryOutput.classList.remove('hidden');
+    theoryContent.classList.add('hidden');
+    loadingIndicator.classList.remove('hidden');
+    theoryTitle.textContent = `${characterName}が「あの方」だった場合`;
+    positiveReasonsList.innerHTML = '';
+    negativeReasonsList.innerHTML = '';
 
-            // LLMからの応答を解析し、表示する関数
-            const parseAndDisplayTheory = (text, positiveListElement, negativeListElement) => {
-                positiveListElement.innerHTML = '';
-                negativeListElement.innerHTML = '';
+    // LLMからの応答を解析し、表示する関数 (変更なし)
+    const parseAndDisplayTheory = (text, positiveListElement, negativeListElement) => {
+        positiveListElement.innerHTML = '';
+        negativeListElement.innerHTML = '';
 
-                const lines = text.split('\n').filter(line => line.trim() !== '');
+        const lines = text.split('\n').filter(line => line.trim() !== '');
 
-                let currentSection = '';
-                let positiveCount = 0;
-                let negativeCount = 0;
+        let currentSection = '';
+        let positiveCount = 0;
+        let negativeCount = 0;
 
-                lines.forEach(line => {
-                    const trimmedLine = line.trim();
-                    console.log('Processing line:', trimmedLine); // Debugging log
+        lines.forEach(line => {
+            const trimmedLine = line.trim();
+            console.log('Processing line:', trimmedLine); // Debugging log
 
-                    if (trimmedLine.includes('肯定的な理由')) {
-                        currentSection = 'positive';
-                        console.log('Section set to positive'); // Debugging log
-                    } else if (trimmedLine.includes('否定的な理由')) {
-                        currentSection = 'negative';
-                        console.log('Section set to negative'); // Debugging log
-                    } else if (trimmedLine.startsWith('*')) { // Check for asterisk bullet point
-                        const listItem = document.createElement('li');
-                        // Remove the leading asterisk and any spaces/tabs after it
-                        listItem.textContent = trimmedLine.replace(/^\*\s*/, '').trim();
+            if (trimmedLine.includes('肯定的な理由')) {
+                currentSection = 'positive';
+                console.log('Section set to positive'); // Debugging log
+            } else if (trimmedLine.includes('否定的な理由')) {
+                currentSection = 'negative';
+                console.log('Section set to negative'); // Debugging log
+            } else if (trimmedLine.startsWith('*')) { // Check for asterisk bullet point
+                const listItem = document.createElement('li');
+                // Remove the leading asterisk and any spaces/tabs after it
+                listItem.textContent = trimmedLine.replace(/^\*\s*/, '').trim();
 
-                        if (currentSection === 'positive' && positiveCount < 3) {
-                            positiveListElement.appendChild(listItem);
-                            positiveCount++;
-                            console.log('Added positive item:', listItem.textContent); // Debugging log
-                        } else if (currentSection === 'negative' && negativeCount < 3) {
-                            negativeListElement.appendChild(listItem);
-                            negativeCount++;
-                            console.log('Added negative item:', listItem.textContent); // Debugging log
-                        }
-                    }
-                });
-
-                // もし何も表示されなかった場合のフォールバック（このログは通常トリガーされないはず）
-                if (positiveListElement.children.length === 0 && negativeListElement.children.length === 0) {
-                    const fallbackItem = document.createElement('li');
-                    fallbackItem.textContent = "（期待する形式で応答がありませんでした。生の応答:）" + text;
-                    positiveListElement.appendChild(fallbackItem);
-                    negativeListElement.innerHTML = '';
-                    console.log('Fallback triggered: No items added.'); // Debugging log
+                if (currentSection === 'positive' && positiveCount < 3) {
+                    positiveListElement.appendChild(listItem);
+                    positiveCount++;
+                    console.log('Added positive item:', listItem.textContent); // Debugging log
+                } else if (currentSection === 'negative' && negativeCount < 3) {
+                    negativeListElement.appendChild(listItem);
+                    negativeCount++;
+                    console.log('Added negative item:', listItem.textContent); // Debugging log
                 }
-            };
-
-
-            try {
-                let chatHistory = [];
-                // プロンプトをさらに具体的にして、箇条書き形式を強調
-                const prompt = `あなたは『名探偵コナン』の専門家であり、黒の組織のボスの正体について独自の理論を構築しています。以下のキャラクターがもし「あの方」だったとしたら、その肯定的な理由と否定的な理由をそれぞれ箇条書きで3点ずつ簡潔に記述してください。
-
-                キャラクター名：${characterName}
-
-                ---
-                肯定的な理由:
-                * * * 否定的な理由:
-                * * * ---
-                `;
-                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
-                
-                const payload = { contents: chatHistory };
-                const apiKey = ""; // ここは空のままでOKです。Canvas環境が自動的にAPIキーを提供します。
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-                console.log('APIリクエストを開始します...');
-                console.log('Payload:', payload);
-                console.log('API URL:', apiUrl);
-
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                console.log('APIレスポンスを受信しました。');
-                console.log('Response Status:', response.status);
-                console.log('Response Status Text:', response.statusText);
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    console.error('APIエラーレスポンス:', errorData);
-                    throw new Error(`APIリクエストが失敗しました: ${response.status} ${response.statusText} - ${JSON.stringify(errorData)}`);
-                }
-
-                const result = await response.json();
-                console.log('API結果:', result);
-
-                if (result.candidates && result.candidates.length > 0 &&
-                    result.candidates[0].content && result.candidates[0].content.parts &&
-                    result.candidates[0].content.parts.length > 0) {
-                    const text = result.candidates[0].content.parts[0].text;
-                    console.log('生成されたテキスト:', text); // 生成されたテキストをログに出力
-
-                    parseAndDisplayTheory(text, positiveReasonsList, negativeReasonsList);
-
-                } else {
-                    console.warn('API応答に有効なコンテンツが見つかりませんでした。', result);
-                    positiveReasonsList.innerHTML = '<li>考察を生成できませんでした。</li>';
-                    negativeReasonsList.innerHTML = '<li>APIからの有効な応答がありませんでした。</li>';
-                }
-            } catch (error) {
-                console.error('考察生成中にエラーが発生しました:', error);
-                positiveReasonsList.innerHTML = '<li>エラーが発生しました。</li>';
-                negativeReasonsList.innerHTML = `<li>詳細: ${error.message || '不明なエラー'}</li>`;
-            } finally {
-                loadingIndicator.classList.add('hidden');
-                theoryContent.classList.remove('hidden');
             }
         });
+
+        // もし何も表示されなかった場合のフォールバック（このログは通常トリガーされないはず）
+        if (positiveListElement.children.length === 0 && negativeListElement.children.length === 0) {
+            const fallbackItem = document.createElement('li');
+            fallbackItem.textContent = "（期待する形式で応答がありませんでした。生の応答:）" + text;
+            positiveListElement.appendChild(fallbackItem);
+            negativeReasonsList.innerHTML = '';
+            console.log('Fallback triggered: No items added.'); // Debugging log
+        }
+    };
+
+
+    try {
+        // --- ここから変更点 ---
+
+        // Vercel Functionのエンドポイントを呼び出す
+        // Vercel Functionは自動的に /api/<ファイル名> のパスで公開されます
+        // 今回の場合、api/generate-theory.js を作成したので、パスは /api/generate-theory になります
+        const vercelFunctionUrl = '/api/generate-theory'; 
+        
+        // Gemini APIに直接送っていたペイロードではなく、
+        // Vercel Functionに送るためのシンプルなペイロードを作成
+        const requestToVercelFunction = {
+            characterName: characterName // キャラクター名だけをVercel Functionに送る
+        };
+
+        console.log('Vercel Functionへのリクエストを開始します...');
+        console.log('Request Payload to Vercel Function:', requestToVercelFunction);
+        console.log('Vercel Function URL:', vercelFunctionUrl);
+
+        const response = await fetch(vercelFunctionUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestToVercelFunction) // Vercel FunctionにJSON形式でデータを送信
+        });
+
+        console.log('Vercel Functionからのレスポンスを受信しました。');
+        console.log('Response Status:', response.status);
+        console.log('Response Status Text:', response.statusText);
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error('Vercel Functionからのエラーレスポンス:', errorData);
+            throw new Error(`Vercel Functionがエラーを返しました: ${response.status} - ${errorData.error || '不明なエラー'}`);
+        }
+
+        // Vercel Functionから返された結果は、Gemini APIの直接の応答形式と同じ
+        const result = await response.json();
+        console.log('Vercel Functionからの結果 (Gemini APIの応答):', result);
+
+        // --- 変更点ここまで ---
+
+        if (result.candidates && result.candidates.length > 0 &&
+            result.candidates[0].content && result.candidates[0].content.parts &&
+            result.candidates[0].content.parts.length > 0) {
+            const text = result.candidates[0].content.parts[0].text;
+            console.log('生成されたテキスト:', text); // 生成されたテキストをログに出力
+
+            parseAndDisplayTheory(text, positiveReasonsList, negativeReasonsList);
+
+        } else {
+            console.warn('Vercel Functionからの応答に有効なコンテンツが見つかりませんでした。', result);
+            positiveReasonsList.innerHTML = '<li>考察を生成できませんでした。</li>';
+            negativeReasonsList.innerHTML = '<li>有効な応答がありませんでした。</li>';
+        }
+    } catch (error) {
+        console.error('考察生成中にエラーが発生しました:', error);
+        positiveReasonsList.innerHTML = '<li>エラーが発生しました。</li>';
+        negativeReasonsList.innerHTML = `<li>詳細: ${error.message || '不明なエラー'}</li>`;
+    } finally {
+        loadingIndicator.classList.add('hidden');
+        theoryContent.classList.remove('hidden');
+    }
+});
     </script>
 </body>
 </html>
