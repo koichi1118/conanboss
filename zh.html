@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>名侦探柯南“那位大人”阴谋论</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px; /* 桌面端最大宽度 */
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px; /* 默认高度 */
+            max-height: 400px; /* 最大高度 */
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px; /* md以上高度 */
+            }
+        }
+        @media (max-width: 767px) {
+            .chart-container {
+                height: 250px; /* 手机端高度 */
+            }
+        }
+
+        .flow-arrow::after {
+            content: '▼';
+            display: block;
+            font-size: 2rem;
+            color: #F3722C;
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background-color: #F94144;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+        }
+
+        /* 手机端适配: 时间线单列显示 */
+        @media (max-width: 767px) {
+            .timeline::after {
+                left: 20px; /* 手机端线条靠左 */
+            }
+            .timeline-container {
+                width: 100%;
+                padding-left: 60px; /* 距离线条的空间 */
+                padding-right: 15px;
+            }
+            .timeline-container.left,
+            .timeline-container.right {
+                left: 0%; /* 两侧都靠左 */
+            }
+            .timeline-container::after {
+                left: 13px; /* 手机端圆点靠左 */
+                right: auto;
+            }
+            .timeline-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+
+    <div class="container mx-auto p-4 md:p-8">
+        <!-- 语言切换链接 -->
+        <div class="text-right mb-4">
+            <a href="index.html" class="text-white hover:text-[#F9C74F] text-lg font-bold">日本語</a>
+        </div>
+
+        <header class="text-center mb-10 md:mb-16">
+            <h1 class="text-4xl md:text-6xl font-black text-white uppercase tracking-wider">“那位大人”</h1>
+            <h2 class="text-2xl md:text-3xl font-bold text-[#F9C74F]">阴谋论板</h2>
+            <p class="mt-4 max-w-3xl mx-auto text-gray-300 text-sm md:text-base">二十多年来，黑衣组织首领的身份一直是《名侦探柯南》中最大的谜团。尽管官方已揭示为乌丸莲耶，但粉丝们层出不穷的猜测，正是青山刚昌老师精妙伏笔的证明。这是一次对该阴谋论的深入探讨。</p>
+        </header>
+
+        <section id="official-reveal" class="mb-10 md:mb-16">
+            <div class="bg-gray-800 rounded-lg shadow-2xl p-6 md:p-8">
+                <h3 class="text-2xl md:text-3xl font-bold text-center mb-2 text-[#F3722C]">官方揭示：乌丸莲耶</h3>
+                <p class="text-center text-gray-300 mb-6 md:mb-8 max-w-4xl mx-auto text-sm md:text-base">首领的身份巧妙地隐藏在17年前的临终留言中。工藤优作最终解开了线索，揭露了神秘的、早已去世的亿万富翁乌丸莲耶，他正是组织的首领——“那位大人”。</p>
+                <div class="flex flex-col items-center justify-center space-y-4">
+                    <div class="bg-gray-700 p-3 md:p-4 rounded-lg shadow-inner text-center">
+                        <p class="text-xs md:text-sm font-semibold text-gray-400">阿曼达·休斯临终留言</p>
+                        <p class="text-xl md:text-2xl font-black tracking-widest text-[#F9C74F]">PUT ON MASCARA</p>
+                    </div>
+                    <div class="flow-arrow"></div>
+                    <div class="bg-gray-700 p-3 md:p-4 rounded-lg shadow-inner text-center">
+                        <p class="text-xs md:text-sm font-semibold text-gray-400">工藤优作的字母重组</p>
+                        <p class="text-xl md:text-2xl font-black tracking-widest text-[#F9C74F]">ASACA RUM</p>
+                    </div>
+                    <div class="flow-arrow"></div>
+                    <div class="bg-red-600 p-3 md:p-4 rounded-lg shadow-lg text-center">
+                        <p class="text-xs md:text-sm font-semibold text-red-200">真实身份</p>
+                        <p class="text-2xl md:text-3xl font-black tracking-widest text-white">CARASUMA</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="suspects" class="mb-10 md:mb-16">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-6 md:mb-8 text-[#F8961E]">嫌疑人画廊：粉丝理论分析</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+
+                <div class="bg-gray-800 rounded-lg shadow-2xl p-5 md:p-6">
+                    <h4 class="text-xl md:text-2xl font-bold text-[#90BE6D] mb-3 md:mb-4">理论1：阿笠博士</h4>
+                    <p class="mb-3 md:mb-4 text-gray-300 text-sm md:text-base">最经典的理论。阿笠博士与柯南的亲近关系、他的发明以及与“那位大人”相似的剪影，使他多年来一直是主要嫌疑人。</p>
+                    <div class="chart-container"><canvas id="agasaChart"></canvas></div>
+                    <div class="mt-3 md:mt-4 text-xs md:text-sm text-gray-400">
+                        <p class="mb-1 md:mb-2"><strong class="text-green-400">支持理由：</strong>完美的机会监视柯南。他的名字包含“阿加莎·克里斯蒂”的元素。可能在假装无能。</p>
+                        <p><strong class="text-red-400">反驳证据：</strong>没有明确动机。真心关爱柯南和少年侦探团。他的经济困境是常有的笑料，与强大首领的形象不符。</p>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 rounded-lg shadow-2xl p-5 md:p-6">
+                    <h4 class="text-xl md:text-2xl font-bold text-[#F94144] mb-3 md:mb-4">理论2：工藤优作</h4>
+                    <p class="mb-3 md:mb-4 text-gray-300 text-sm md:text-base">如果这位名侦探是秘密的犯罪首脑呢？优作的智力无与伦比，他神秘的失踪助长了这一理论。</p>
+                    <div class="chart-container"><canvas id="yusakuChart"></canvas></div>
+                    <div class="mt-3 md:mt-4 text-xs md:text-sm text-gray-400">
+                        <p class="mb-1 md:mb-2"><strong class="text-green-400">支持理由：</strong>拥有管理全球辛迪加的神级智力。可能策划了新一的缩小以保护或利用他。经常领先所有人一步。</p>
+                        <p><strong class="text-red-400">反驳证据：</strong>积极对抗黑衣组织。是他推理出乌丸的身份。深爱他的儿子和妻子。</p>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 rounded-lg shadow-2xl p-5 md:p-6">
+                    <h4 class="text-xl md:text-2xl font-bold text-[#F3722C] mb-3 md:mb-4">理论3：詹姆斯·布莱克</h4>
+                    <p class="mb-3 md:mb-4 text-gray-300 text-sm md:text-base">一位高级联邦调查局特工，名字过于巧合。他的登场充满神秘，使他成为一个可能的“内鬼”候选人。</p>
+                    <div class="chart-container"><canvas id="jamesChart"></canvas></div>
+                    <div class="mt-3 md:mt-4 text-xs md:text-sm text-gray-400">
+                        <p class="mb-1 md:mb-2"><strong class="text-green-400">支持理由：</strong>“詹姆斯·布莱克”这个名字直接相关。他的职位使他能够接触敏感信息。他的外貌与早期模糊的描述相符。</p>
+                        <p><strong class="text-red-400">反驳证据：</strong>一位忠诚的联邦调查局特工，多次证明其忠诚度，与赤井和朱蒂密切合作。其行动始终与黑衣组织的目标相悖。</p>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 rounded-lg shadow-2xl p-5 md:p-6">
+                    <h4 class="text-xl md:text-2xl font-bold text-[#F9C74F] mb-3 md:mb-4">理论4：圆谷光彦</h4>
+                    <p class="mb-3 md:mb-4 text-gray-300 text-sm md:text-base">出人意料的理论。它认为光彦实际上是被APTX4869缩小后的首领，隐藏在少年侦探团中。</p>
+                    <div class="chart-container"><canvas id="mitsuhikoChart"></canvas></div>
+                    <div class="mt-3 md:mt-4 text-xs md:text-sm text-gray-400">
+                        <p class="mb-1 md:mb-2"><strong class="text-green-400">支持理由：</strong>偶尔表现出超越年龄的知识。这将是最终的、意想不到的转折。这也能解释他对“成年”灰原的异常迷恋。</p>
+                        <p><strong class="text-red-400">反驳证据：</strong>几乎没有可信度。在几乎所有情况下都表现得像个普通孩子。该理论纯粹依赖于冲击力而非实质性证据。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="clues-timeline" class="mb-10 md:mb-16">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12 text-[#90BE6D]">线索之网：主要伏笔时间线</h3>
+            <div class="timeline">
+                <div class="timeline-container left">
+                    <div class="timeline-content bg-gray-800 p-4 md:p-5">
+                        <h2 class="font-bold text-lg md:text-xl text-[#F9C74F]">漫画24卷：皮斯科的遗言</h2>
+                        <p class="text-xs md:text-sm text-gray-300">“我服侍您这么久了……”皮斯科的临终留言暗示首领是他认识了几十年的人，确立了组织悠久的历史。</p>
+                    </div>
+                </div>
+                <div class="timeline-container right">
+                    <div class="timeline-content bg-gray-800 p-4 md:p-5">
+                        <h2 class="font-bold text-lg md:text-xl text-[#F9C74F]">漫画24卷：贝尔摩德登场</h2>
+                        <p class="text-xs md:text-sm text-gray-300">贝尔摩德的到来，作为“首领的宠儿”，她神秘地不老，引入了对抗时间的核心主题，以及她与高层之间特殊而秘密的联系。</p>
+                    </div>
+                </div>
+                <div class="timeline-container left">
+                    <div class="timeline-content bg-gray-800 p-4 md:p-5">
+                        <h2 class="font-bold text-lg md:text-xl text-[#F9C74F]">漫画30卷：黄金黄昏</h2>
+                        <p class="text-xs md:text-sm text-gray-300">首次提及乌丸莲耶。一起侦探们聚集在他旧宅的案件，以乌鸦为主题，为多年后的最终揭示奠定了基础。</p>
+                    </div>
+                </div>
+                <div class="timeline-container right">
+                    <div class="timeline-content bg-gray-800 p-4 md:p-5">
+                        <h2 class="font-bold text-lg md:text-xl text-[#F9C74F]">漫画37卷：“七个孩子”</h2>
+                        <p class="text-xs md:text-sm text-gray-300">首领的电子邮件地址被揭示为日本童谣《七个孩子》的旋律，这首童谣与乌鸦（“karasu”）有关。这在多年来是最直接的暗示。</p>
+                    </div>
+                </div>
+                 <div class="timeline-container left">
+                    <div class="timeline-content bg-gray-800 p-4 md:p-5">
+                        <h2 class="font-bold text-lg md:text-xl text-[#F9C74F]">漫画85卷：朗姆篇开始</h2>
+                        <p class="text-xs md:text-sm text-gray-300">朗姆，首领的二把手，的登场加剧了调查，并提供了关于组织内部运作和领导结构的新线索。</p>
+                    </div>
+                </div>
+                <div class="timeline-container right">
+                    <div class="timeline-content bg-gray-800 p-4 md:p-5">
+                        <h2 class="font-bold text-lg md:text-xl text-[#F94144]">漫画95卷：身份揭示</h2>
+                        <p class="text-xs md:text-sm text-gray-300">优作和赤井揭示了他们的推理：乌丸莲耶是黑衣组织的首领，将17年前的谋杀案与现在联系起来。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="key-elements" class="mb-10 md:mb-16">
+             <h3 class="text-2xl md:text-3xl font-bold text-center mb-6 md:mb-8 text-[#F3722C]">核心谜团排名</h3>
+             <p class="text-center text-gray-300 mb-6 md:mb-8 max-w-4xl mx-auto text-sm md:text-base">即使首领的身份已揭示，仍有几个关键元素笼罩在谜团中。此图表根据它们对系列结局的感知重要性对剩余情节进行了排名。</p>
+            <div class="bg-gray-800 rounded-lg shadow-2xl p-5 md:p-6">
+                <div class="chart-container" style="height: 400px; max-height: 500px;"><canvas id="importanceChart"></canvas></div>
+            </div>
+        </section>
+
+        <section id="llm-theory-generator" class="mb-10 md:mb-16">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-6 md:mb-8 text-[#F9C74F]">✨ 考察新首领候选人 ✨</h3>
+            <p class="text-center text-gray-300 mb-6 md:mb-8 max-w-4xl mx-auto text-sm md:text-base">你认为《名侦探柯南》中的哪个角色可能是“那位大人”？输入角色名，看看Gemini生成的独特见解吧！</p>
+            <div class="bg-gray-800 rounded-lg shadow-2xl p-5 md:p-8">
+                <div class="flex flex-col md:flex-row items-center justify-center gap-4 mb-6">
+                    <input type="text" id="characterNameInput" placeholder="输入角色名..." class="p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#F9C74F] w-full md:w-1/2 text-sm md:text-base">
+                    <button id="generateTheoryBtn" class="px-6 py-3 bg-[#F9C74F] text-gray-900 font-bold rounded-lg shadow-lg hover:bg-[#F8961E] transition duration-300 ease-in-out w-full md:w-auto text-sm md:text-base">
+                        生成考察！
+                    </button>
+                </div>
+                <div id="theoryOutput" class="mt-6 md:mt-8 p-5 md:p-6 bg-gray-700 rounded-lg shadow-inner hidden">
+                    <h4 class="text-xl md:text-2xl font-bold text-[#90BE6D] mb-3 md:mb-4" id="theoryTitle"></h4>
+                    <div id="loadingIndicator" class="text-center text-gray-400 hidden">
+                        <p class="text-sm md:text-base">正在生成考察...</p>
+                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-[#F9C74F] mx-auto mt-4"></div>
+                    </div>
+                    <div id="theoryContent">
+                        <p class="text-base md:text-lg font-semibold text-green-400 mb-2">肯定理由:</p>
+                        <ul id="positiveReasons" class="list-disc list-inside text-gray-300 pl-4 mb-4 text-sm md:text-base"></ul>
+                        <p class="text-base md:text-lg font-semibold text-red-400 mb-2">否定理由:</p>
+                        <ul id="negativeReasons" class="list-disc list-inside text-gray-300 pl-4 text-sm md:text-base"></ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <footer class="text-center mt-10 md:mt-16 pt-6 md:pt-8 border-t border-gray-700">
+            <p class="text-gray-400 text-xs md:text-sm">本信息图仅供说明和娱乐目的。</p>
+            <p class="text-xs text-gray-500">名侦探柯南及所有相关角色均为青山刚昌/小学馆的商标。</p>
+        </footer>
+
+    </div>
+
+    <script>
+        const FONT_COLOR = '#E5E7EB';
+        const GRID_COLOR = 'rgba(229, 231, 235, 0.2)';
+        
+        const PALETTE = {
+            red: '#F94144',
+            orange: '#F3722C',
+            yellowOrange: '#F8961E',
+            yellow: '#F9C74F',
+            green: '#90BE6D'
+        };
+
+        const chartTooltipConfig = {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            if (Array.isArray(label)) {
+                              return label.join(' ');
+                            } else {
+                              return label;
+                            }
+                        }
+                    }
+                },
+                legend: {
+                    labels: {
+                        color: FONT_COLOR
+                    }
+                }
+            }
+        };
+
+        const radarOptions = {
+            maintainAspectRatio: false,
+            scales: {
+                r: {
+                    angleLines: { color: GRID_COLOR },
+                    grid: { color: GRID_COLOR },
+                    pointLabels: {
+                        color: FONT_COLOR,
+                        font: { size: 14 }
+                    },
+                    ticks: {
+                        color: FONT_COLOR,
+                        backdropColor: 'rgba(0, 0, 0, 0.5)',
+                        stepSize: 2,
+                        min: 0,
+                        max: 10,
+                        display: true
+                    }
+                }
+            },
+            ...chartTooltipConfig
+        };
+
+        const predefinedCharacterScores = {
+            "阿笠博士": { motive: 2, opportunity: 9, intellect: 7, foreshadowing: 6, credibility: 5 },
+            "工藤优作": { motive: 4, opportunity: 6, intellect: 10, foreshadowing: 3, credibility: 6 },
+            "詹姆斯·布莱克": { motive: 3, opportunity: 7, intellect: 7, foreshadowing: 8, credibility: 4 },
+            "圆谷光彦": { motive: 1, opportunity: 5, intellect: 2, foreshadowing: 1, credibility: 1 },
+            "乌丸莲耶": { motive: 9, opportunity: 10, intellect: 10, foreshadowing: 9, credibility: 10 },
+            "贝尔摩德": { motive: 7, opportunity: 8, intellect: 9, foreshadowing: 8, credibility: 6 },
+            "朗姆": { motive: 8, opportunity: 9, intellect: 9, foreshadowing: 7, credibility: 8 },
+            "吉田步美": { motive: 1, opportunity: 2, intellect: 2, foreshadowing: 1, credibility: 1 }
+        };
+
+        const getPredefinedScores = (characterKey) => {
+            const scores = predefinedCharacterScores[characterKey];
+            if (scores) {
+                return [
+                    scores.motive,
+                    scores.opportunity,
+                    scores.intellect,
+                    scores.foreshadowing,
+                    scores.credibility
+                ];
+            }
+            return [0, 0, 0, 0, 0];
+        };
+
+        new Chart(document.getElementById('agasaChart'), {
+            type: 'radar',
+            data: {
+                labels: ['动机', '机会', '智力', '伏笔', '可信度'],
+                datasets: [{
+                    label: '阿笠博士理论得分',
+                    data: getPredefinedScores("阿笠博士"),
+                    backgroundColor: 'rgba(144, 190, 109, 0.4)',
+                    borderColor: PALETTE.green,
+                    pointBackgroundColor: PALETTE.green
+                }]
+            },
+            options: radarOptions
+        });
+
+        new Chart(document.getElementById('yusakuChart'), {
+            type: 'radar',
+            data: {
+                labels: ['动机', '机会', '智力', '伏笔', '可信度'],
+                datasets: [{
+                    label: '优作理论得分',
+                    data: getPredefinedScores("工藤优作"),
+                    backgroundColor: 'rgba(249, 65, 68, 0.4)',
+                    borderColor: PALETTE.red,
+                    pointBackgroundColor: PALETTE.red
+                }]
+            },
+            options: radarOptions
+        });
+
+        new Chart(document.getElementById('jamesChart'), {
+            type: 'radar',
+            data: {
+                labels: ['动机', '机会', '智力', '伏笔', '可信度'],
+                datasets: [{
+                    label: '詹姆斯理论得分',
+                    data: getPredefinedScores("詹姆斯·布莱克"),
+                    backgroundColor: 'rgba(243, 114, 44, 0.4)',
+                    borderColor: PALETTE.orange,
+                    pointBackgroundColor: PALETTE.orange
+                }]
+            },
+            options: radarOptions
+        });
+
+        new Chart(document.getElementById('mitsuhikoChart'), {
+            type: 'radar',
+            data: {
+                labels: ['动机', '机会', '智力', '伏笔', '可信度'],
+                datasets: [{
+                    label: '光彦理论得分',
+                    data: getPredefinedScores("圆谷光彦"),
+                    backgroundColor: 'rgba(249, 199, 79, 0.4)',
+                    borderColor: PALETTE.yellow,
+                    pointBackgroundColor: PALETTE.yellow
+                }]
+            },
+            options: radarOptions
+        });
+
+        const wrapLabel = (label) => {
+            const maxLength = 16;
+            if (label.length <= maxLength) return label;
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + ' ' + word).trim().length > maxLength) {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            }
+            if (currentLine) lines.push(currentLine.trim());
+            return lines;
+        };
+
+        const importanceLabels = [
+            "APTX4869的真实目的（长生不老？）",
+            "贝尔摩德与首领的关系",
+            "组织的最终目标",
+            "朗姆的最终身份和角色",
+            "乌丸的当前状态（存活？AI？）"
+        ];
+
+        new Chart(document.getElementById('importanceChart'), {
+            type: 'bar',
+            data: {
+                labels: importanceLabels.map(wrapLabel),
+                datasets: [{
+                    label: '情节重要性得分',
+                    data: [98, 95, 90, 85, 88],
+                    backgroundColor: [PALETTE.red, PALETTE.orange, PALETTE.yellowOrange, PALETTE.yellow, PALETTE.green],
+                    borderColor: '#4A5568',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        grid: { color: GRID_COLOR },
+                        ticks: { color: FONT_COLOR }
+                    },
+                    y: {
+                        grid: { color: 'transparent' },
+                        ticks: { color: FONT_COLOR }
+                    }
+                },
+                 ...chartTooltipConfig
+            }
+        });
+
+        const parseAndDisplayTheory = (text, positiveListElement, negativeListElement) => {
+            positiveListElement.innerHTML = '';
+            negativeListElement.innerHTML = '';
+
+            const lines = text.split('\n').filter(line => line.trim() !== '');
+
+            let currentSection = '';
+            let positiveCount = 0;
+            let negativeCount = 0;
+
+            lines.forEach(line => {
+                const trimmedLine = line.trim();
+
+                if (trimmedLine.includes('肯定理由') || trimmedLine.includes('肯定的な理由')) {
+                    currentSection = 'positive';
+                } else if (trimmedLine.includes('否定理由') || trimmedLine.includes('否定的な理由')) {
+                    currentSection = 'negative';
+                } else if (trimmedLine.startsWith('*')) {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = trimmedLine.replace(/^\*\s*/, '').replace(/\*\*/g, '').trim();
+
+                    if (currentSection === 'positive' && positiveCount < 3) {
+                        positiveListElement.appendChild(listItem);
+                        positiveCount++;
+                    } else if (currentSection === 'negative' && negativeCount < 3) {
+                        negativeListElement.appendChild(listItem);
+                        negativeCount++;
+                    }
+                }
+            });
+
+            if (positiveListElement.children.length === 0 && negativeListElement.children.length === 0) {
+                const fallbackItem = document.createElement('li');
+                fallbackItem.textContent = "（未获得预期格式的响应。原始响应:）" + text;
+                positiveListElement.appendChild(fallbackItem);
+                negativeListElement.innerHTML = '';
+            }
+        };
+
+
+        document.getElementById('generateTheoryBtn').addEventListener('click', async () => {
+            const characterName = document.getElementById('characterNameInput').value.trim();
+            const theoryOutput = document.getElementById('theoryOutput');
+            const theoryTitle = document.getElementById('theoryTitle');
+            const positiveReasonsList = document.getElementById('positiveReasons');
+            const negativeReasonsList = document.getElementById('negativeReasons');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const theoryContent = document.getElementById('theoryContent');
+
+            if (!characterName) {
+                theoryOutput.classList.remove('hidden');
+                theoryTitle.textContent = '错误';
+                positiveReasonsList.innerHTML = '';
+                negativeReasonsList.innerHTML = '<li>请输入角色名。</li>';
+                theoryContent.classList.remove('hidden');
+                loadingIndicator.classList.add('hidden');
+                return;
+            }
+
+            theoryOutput.classList.remove('hidden');
+            theoryContent.classList.add('hidden');
+            loadingIndicator.classList.remove('hidden');
+            theoryTitle.textContent = `${characterName}是“那位大人”的情况`;
+            positiveReasonsList.innerHTML = '';
+            negativeReasonsList.innerHTML = '';
+
+            try {
+                const vercelFunctionUrl = '/api/generate-theory'; 
+                const requestToVercelFunction = {
+                    characterName: characterName
+                };
+
+                const response = await fetch(vercelFunctionUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(requestToVercelFunction)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`API请求失败: ${response.status} - ${errorData.error || '未知错误'}`);
+                }
+
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    
+                    const text = result.candidates[0].content.parts[0].text;
+                    parseAndDisplayTheory(text, positiveReasonsList, negativeReasonsList);
+
+                } else {
+                    positiveReasonsList.innerHTML = '<li>未能生成考察。</li>';
+                    negativeReasonsList.innerHTML = '<li>未获得有效响应。</li>';
+                }
+
+            } catch (error) {
+                console.error('生成考察时发生错误:', error);
+                positiveReasonsList.innerHTML = '<li>发生错误。</li>';
+                negativeReasonsList.innerHTML = `<li>详情: ${error.message || '未知错误'}</li>`;
+            } finally {
+                loadingIndicator.classList.add('hidden');
+                theoryContent.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
+```
+
+---
+
+### 2. `api/generate-theory.js` (Vercel Function)
+
+このファイルは、GitHubリポジトリの `api/` ディレクトリ内に配置してください。
+
+```javascript
+// Vercel Functionのエントリーポイント
+export default async function handler(request, response) {
+  // POSTリクエストのみを許可
+  if (request.method !== 'POST') {
+    return response.status(405).json({ error: 'Method Not Allowed' });
+  }
+
+  // Vercelの環境変数からAPIキーを安全に取得
+  // Vercelのダッシュボードで環境変数 GEMINI_API_KEY を設定してください
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    return response.status(500).json({ error: 'API Key not configured in Vercel Environment Variables.' });
+  }
+
+  // Gemini APIのエンドポイント
+  const geminiApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+  try {
+    const { characterName } = request.body; // クライアントからのリクエストボディを解析
+
+    if (!characterName) {
+      return response.status(400).json({ error: 'Character name is required.' });
+    }
+
+    // Gemini APIへのプロンプト
+    // LLMに理由のみを生成させる（JSONスキーマは使用しない）
+    // 中国語版のプロンプトも追加
+    const prompt = `你是一名《名侦探柯南》专家，正在构建关于黑衣组织首领身份的独特理论。如果以下角色名或通用词汇是“那位大人”，请分别用3个项目简洁地列出肯定理由和否定理由，要求逻辑清晰且不矛盾。即使输入的名称未在《名侦探柯南》中出现，也请基于该词汇的联想特征或角色，提出富有创造性和说服力的假设进行考察。
+
+    角色名：${characterName}
+
+    ---
+    肯定理由:
+    *
+    *
+    *
+    否定理由:
+    *
+    *
+    *
+    ---
+    `;
+
+    const payload = {
+      contents: [{
+        role: 'user',
+        parts: [{
+          text: prompt
+        }]
+      }]
+    };
+
+    // Gemini APIにリクエストを送信
+    const geminiResponse = await fetch(geminiApiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!geminiResponse.ok) {
+      const errorData = await geminiResponse.json();
+      console.error('Gemini API Error:', errorData);
+      return response.status(geminiResponse.status).json({ error: 'Failed to get response from Gemini API', details: errorData });
+    }
+
+    const geminiResult = await geminiResponse.json();
+    
+    // Gemini APIからの応答をクライアントに返す
+    // LLMがJSONスキーマなしでテキストを返すため、そのまま転送
+    return response.status(200).json(geminiResult);
+
+  } catch (error) {
+    console.error('Vercel Function Error:', error);
+    return response.status(500).json({ error: 'Internal Server Error', details: error.message });
+  }
+}
