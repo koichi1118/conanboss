@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>名探偵コナン「あの方」陰謀論ボード</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .flow-arrow::after {
+            content: '▼';
+            display: block;
+            font-size: 2rem;
+            color: #F3722C;
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background-color: #F94144;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+        }
+        .timeline-container {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+        }
+        .timeline-container.left {
+            left: 0;
+        }
+        .timeline-container.right {
+            left: 50%;
+        }
+        .timeline-container::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            right: -17px;
+            background-color: white;
+            border: 4px solid #F94144;
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        .timeline-container.right::after {
+            left: -16px;
+        }
+        .timeline-content {
+            padding: 20px 30px;
+            background-color: white;
+            position: relative;
+            border-radius: 6px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-6xl font-black text-white uppercase tracking-wider">「あの方」</h1>
+            <h2 class="text-2xl md:text-3xl font-bold text-[#F9C74F]">陰謀論ボード</h2>
+            <p class="mt-4 max-w-3xl mx-auto text-gray-300">20年以上にわたり、黒の組織のボスの正体は『名探偵コナン』最大の謎でした。公式には烏丸蓮耶とされていますが、ファンが繰り広げた考察は、青山剛昌先生の巧みな伏線張りの証です。これはその陰謀論の深掘りです。</p>
+        </header>
+
+        <section id="official-reveal" class="mb-16">
+            <div class="bg-gray-800 rounded-lg shadow-2xl p-6 md:p-8">
+                <h3 class="text-3xl font-bold text-center mb-2 text-[#F3722C]">公式発表：烏丸蓮耶</h3>
+                <p class="text-center text-gray-300 mb-8 max-w-4xl mx-auto">ボスの正体は、17年前のダイイングメッセージに巧妙に隠されていました。工藤優作が最終的にその手がかりを解き明かし、謎多き故人である大富豪、烏丸蓮耶が組織のリーダー「あの方」であることを暴きました。</p>
+                <div class="flex flex-col items-center justify-center space-y-4">
+                    <div class="bg-gray-700 p-4 rounded-lg shadow-inner text-center">
+                        <p class="text-sm font-semibold text-gray-400">アマンダ・ヒューズのダイイングメッセージ</p>
+                        <p class="text-2xl font-black tracking-widest text-[#F9C74F]">PUT ON MASCARA</p>
+                    </div>
+                    <div class="flow-arrow"></div>
+                    <div class="bg-gray-700 p-4 rounded-lg shadow-inner text-center">
+                        <p class="text-sm font-semibold text-gray-400">工藤優作のアナグラム</p>
+                        <p class="text-2xl font-black tracking-widest text-[#F9C74F]">ASACA RUM</p>
+                    </div>
+                    <div class="flow-arrow"></div>
+                    <div class="bg-red-600 p-4 rounded-lg shadow-lg text-center">
+                        <p class="text-sm font-semibold text-red-200">真の正体</p>
+                        <p class="text-3xl font-black tracking-widest text-white">CARASUMA</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="suspects" class="mb-16">
+            <h3 class="text-3xl font-bold text-center mb-8 text-[#F8961E]">容疑者ギャラリー：ファン理論の分析</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                <div class="bg-gray-800 rounded-lg shadow-2xl p-6">
+                    <h4 class="text-2xl font-bold text-[#90BE6D] mb-4">理論1：阿笠博士</h4>
+                    <p class="mb-4 text-gray-300">最も古典的な理論。コナンとの近さ、彼の発明、そして「あの方」に似たシルエットから、長年有力な容疑者でした。</p>
+                    <div class="chart-container"><canvas id="agasaChart"></canvas></div>
+                    <div class="mt-4 text-sm text-gray-400">
+                        <p class="mb-2"><strong class="text-green-400">肯定的な理由：</strong>コナンを監視する絶好の機会。彼の名前には「アガサ・クリスティ」の要素が含まれる。無能を装っている可能性。</p>
+                        <p><strong class="text-red-400">否定的な理由：</strong>明確な動機がない。コナンや少年探偵団を心から気にかけている。彼の金銭的な苦労は、強大なボスには不釣り合いなギャグ。</p>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 rounded-lg shadow-2xl p-6">
+                    <h4 class="text-2xl font-bold text-[#F94144] mb-4">理論2：工藤優作</h4>
+                    <p class="mb-4 text-gray-300">もし名探偵が密かに大犯罪者だったら？優作の知性は比類なく、彼の謎めいた失踪がこの理論を後押ししました。</p>
+                    <div class="chart-container"><canvas id="yusakuChart"></canvas></div>
+                    <div class="mt-4 text-sm text-gray-400">
+                        <p class="mb-2"><strong class="text-green-400">肯定的な理由：</strong>世界的組織を率いるに足る神がかり的な知性。新一の幼児化を彼を守るため、あるいは利用するために仕組んだ可能性。常に一歩先を行く。</p>
+                        <p><strong class="text-red-400">否定的な理由：</strong>黒の組織に積極的に対抗してきた。烏丸の正体を推理したのは彼自身。息子と妻を深く愛している。</p>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 rounded-lg shadow-2xl p-6">
+                    <h4 class="text-2xl font-bold text-[#F3722C] mb-4">理論3：ジェイムズ・ブラック</h4>
+                    <p class="mb-4 text-gray-300">FBIの高官でありながら、その名前があまりにも出来すぎている。彼の登場は謎に包まれており、有力な「内通者」候補でした。</p>
+                    <div class="chart-container"><canvas id="jamesChart"></canvas></div>
+                    <div class="mt-4 text-sm text-gray-400">
+                        <p class="mb-2"><strong class="text-green-400">肯定的な理由：</strong>「ジェイムズ・ブラック」という名前が直接的な繋がり。彼の階級が機密情報へのアクセスを可能にする。彼の外見が初期の曖昧な描写と一致。</p>
+                        <p><strong class="text-red-400">否定的な理由：</strong>赤井やジョディと密接に協力し、何度も忠誠心を示している献身的なFBI捜査官。行動は常に黒の組織の目標に反対。</p>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 rounded-lg shadow-2xl p-6">
+                    <h4 class="text-2xl font-bold text-[#F9C74F] mb-4">理論4：円谷光彦</h4>
+                    <p class="mb-4 text-gray-300">奇抜な理論。光彦がAPTX4869で幼児化したボスであり、少年探偵団の中に隠れているという説。</p>
+                    <div class="chart-container"><canvas id="mitsuhikoChart"></canvas></div>
+                    <div class="mt-4 text-sm text-gray-400">
+                        <p class="mb-2"><strong class="text-green-400">肯定的な理由：</strong>時折、年齢に不釣り合いな知識を見せる。究極の予想外の展開になる。彼が「大人」の灰原に異常な好意を抱いている理由。</p>
+                        <p><strong class="text-red-400">否定的な理由：</strong>ほとんど信憑性がない。ほとんどの状況で普通の子供のように振る舞う。理論は純粋な衝撃に依存している。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="clues-timeline" class="mb-16">
+            <h3 class="text-3xl font-bold text-center mb-12 text-[#90BE6D]">伏線の網：主要な伏線のタイムライン</h3>
+            <div class="timeline">
+                <div class="timeline-container left">
+                    <div class="timeline-content bg-gray-800">
+                        <h2 class="font-bold text-xl text-[#F9C74F]">コミックス24巻：ピスコの最期の言葉</h2>
+                        <p class="text-sm text-gray-300">「長年お仕えしたのに…」ピスコのダイイングメッセージは、ボスが彼が何十年も知っている人物であることを示唆し、組織の長い歴史を確立しました。</p>
+                    </div>
+                </div>
+                <div class="timeline-container right">
+                    <div class="timeline-content bg-gray-800">
+                        <h2 class="font-bold text-xl text-[#F9C74F]">コミックス24巻：ベルモットの登場</h2>
+                        <p class="text-sm text-gray-300">「あの方」のお気に入りであり、謎めいた不老のベルモットの登場は、時の流れに逆らうという中心テーマと、彼女のトップとの特別な秘密の関係を導入します。</p>
+                    </div>
+                </div>
+                <div class="timeline-container left">
+                    <div class="timeline-content bg-gray-800">
+                        <h2 class="font-bold text-xl text-[#F9C74F]">コミックス30巻：黄昏の館</h2>
+                        <p class="text-sm text-gray-300">烏丸蓮耶の最初の言及。探偵たちが彼の古い屋敷に集まる事件で、カラスのテーマと共に、後の最終的な正体判明の基礎が築かれました。</p>
+                    </div>
+                </div>
+                <div class="timeline-container right">
+                    <div class="timeline-content bg-gray-800">
+                        <h2 class="font-bold text-xl text-[#F9C74F]">コミックス37巻：「七つの子」</h2>
+                        <p class="text-sm text-gray-300">ボスのメールアドレスのプッシュ音が童謡「七つの子」のメロディであることが判明。この曲にはカラス（「からす」）が登場し、長年最も直接的なヒントとなりました。</p>
+                    </div>
+                </div>
+                 <div class="timeline-container left">
+                    <div class="timeline-content bg-gray-800">
+                        <h2 class="font-bold text-xl text-[#F9C74F]">コミックス85巻：ラム編開始</h2>
+                        <p class="text-sm text-gray-300">ボスのNo.2であるラムの登場は、捜索を激化させ、組織の内部構造とリーダーシップに関する新たな手がかりを提供します。</p>
+                    </div>
+                </div>
+                <div class="timeline-container right">
+                    <div class="timeline-content bg-gray-800">
+                        <h2 class="font-bold text-xl text-[#F94144]">コミックス95巻：正体判明</h2>
+                        <p class="text-sm text-gray-300">優作と赤井が推理を披露：烏丸蓮耶が黒の組織のボスであり、17年前の殺人事件から現在へと点と点が繋がりました。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="key-elements" class="mb-16">
+             <h3 class="text-3xl font-bold text-center mb-8 text-[#F3722C]">核心となる謎のランキング</h3>
+             <p class="text-center text-gray-300 mb-8 max-w-4xl mx-auto">ボスの正体が明らかになった今も、いくつかの重要な要素は謎に包まれたままです。このチャートは、物語の最終局面に向けて残されたプロットの重要度をランク付けしています。</p>
+            <div class="bg-gray-800 rounded-lg shadow-2xl p-6">
+                <div class="chart-container" style="height: 400px; max-height: 500px;"><canvas id="importanceChart"></canvas></div>
+            </div>
+        </section>
+
+        <section id="llm-theory-generator" class="mb-16">
+            <h3 class="text-3xl font-bold text-center mb-8 text-[#F9C74F]">✨ 新しいボス候補を考察 ✨</h3>
+            <p class="text-center text-gray-300 mb-8 max-w-4xl mx-auto">あなたが考える『名探偵コナン』のキャラクターがもし「あの方」だったら？そのキャラクター名を入力して、Geminiが生成する独自の考察を見てみましょう！</p>
+            <div class="bg-gray-800 rounded-lg shadow-2xl p-6 md:p-8">
+                <div class="flex flex-col md:flex-row items-center justify-center gap-4 mb-6">
+                    <input type="text" id="characterNameInput" placeholder="キャラクター名を入力..." class="p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#F9C74F] w-full md:w-1/2">
+                    <button id="generateTheoryBtn" class="px-6 py-3 bg-[#F9C74F] text-gray-900 font-bold rounded-lg shadow-lg hover:bg-[#F8961E] transition duration-300 ease-in-out w-full md:w-auto">
+                        考察を生成！
+                    </button>
+                </div>
+                <div id="theoryOutput" class="mt-8 p-6 bg-gray-700 rounded-lg shadow-inner hidden">
+                    <h4 class="text-2xl font-bold text-[#90BE6D] mb-4" id="theoryTitle"></h4>
+                    <div id="loadingIndicator" class="text-center text-gray-400 hidden">
+                        <p>考察を生成中...</p>
+                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-[#F9C74F] mx-auto mt-4"></div>
+                    </div>
+                    <div id="theoryContent">
+                        <p class="text-lg font-semibold text-green-400 mb-2">肯定的な理由:</p>
+                        <ul id="positiveReasons" class="list-disc list-inside text-gray-300 pl-4 mb-4"></ul>
+                        <p class="text-lg font-semibold text-red-400 mb-2">否定的な理由:</p>
+                        <ul id="negativeReasons" class="list-disc list-inside text-gray-300 pl-4"></ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <footer class="text-center mt-16 pt-8 border-t border-gray-700">
+            <p class="text-gray-400">このインフォグラフィックは、解説および娯楽目的で作成されました。</p>
+            <p class="text-sm text-gray-500">名探偵コナンおよび関連するすべてのキャラクターは、青山剛昌／小学館の商標です。</p>
+        </footer>
+
+    </div>
+
+    <script>
+        const FONT_COLOR = '#E5E7EB';
+        const GRID_COLOR = 'rgba(229, 231, 235, 0.2)';
+        
+        const PALETTE = {
+            red: '#F94144',
+            orange: '#F3722C',
+            yellowOrange: '#F8961E',
+            yellow: '#F9C74F',
+            green: '#90BE6D'
+        };
+
+        const chartTooltipConfig = {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            if (Array.isArray(label)) {
+                              return label.join(' ');
+                            } else {
+                              return label;
+                            }
+                        }
+                    }
+                },
+                legend: {
+                    labels: {
+                        color: FONT_COLOR
+                    }
+                }
+            }
+        };
+
+        const radarOptions = {
+            maintainAspectRatio: false,
+            scales: {
+                r: {
+                    angleLines: { color: GRID_COLOR },
+                    grid: { color: GRID_COLOR },
+                    pointLabels: {
+                        color: FONT_COLOR,
+                        font: { size: 12 }
+                    },
+                    ticks: {
+                        color: FONT_COLOR,
+                        backdropColor: 'rgba(0, 0, 0, 0.5)',
+                        stepSize: 2
+                    }
+                }
+            },
+            ...chartTooltipConfig
+        };
+
+        new Chart(document.getElementById('agasaChart'), {
+            type: 'radar',
+            data: {
+                labels: ['動機', '機会', '知性', '伏線', '信憑性'],
+                datasets: [{
+                    label: '阿笠博士説のスコア',
+                    data: [2, 9, 7, 6, 5],
+                    backgroundColor: 'rgba(144, 190, 109, 0.4)',
+                    borderColor: PALETTE.green,
+                    pointBackgroundColor: PALETTE.green
+                }]
+            },
+            options: radarOptions
+        });
+
+        new Chart(document.getElementById('yusakuChart'), {
+            type: 'radar',
+            data: {
+                labels: ['動機', '機会', '知性', '伏線', '信憑性'],
+                datasets: [{
+                    label: '優作説のスコア',
+                    data: [4, 6, 10, 3, 6],
+                    backgroundColor: 'rgba(249, 65, 68, 0.4)',
+                    borderColor: PALETTE.red,
+                    pointBackgroundColor: PALETTE.red
+                }]
+            },
+            options: radarOptions
+        });
+
+        new Chart(document.getElementById('jamesChart'), {
+            type: 'radar',
+            data: {
+                labels: ['動機', '機会', '知性', '伏線', '信憑性'],
+                datasets: [{
+                    label: 'ジェイムズ説のスコア',
+                    data: [3, 7, 7, 8, 4],
+                    backgroundColor: 'rgba(243, 114, 44, 0.4)',
+                    borderColor: PALETTE.orange,
+                    pointBackgroundColor: PALETTE.orange
+                }]
+            },
+            options: radarOptions
+        });
+
+        new Chart(document.getElementById('mitsuhikoChart'), {
+            type: 'radar',
+            data: {
+                labels: ['動機', '機会', '知性', '伏線', '信憑性'],
+                datasets: [{
+                    label: '光彦説のスコア',
+                    data: [1, 5, 2, 1, 1],
+                    backgroundColor: 'rgba(249, 199, 79, 0.4)',
+                    borderColor: PALETTE.yellow,
+                    pointBackgroundColor: PALETTE.yellow
+                }]
+            },
+            options: radarOptions
+        });
+
+        const wrapLabel = (label) => {
+            const maxLength = 16;
+            if (label.length <= maxLength) return label;
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + ' ' + word).trim().length > maxLength) {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            }
+            if (currentLine) lines.push(currentLine.trim());
+            return lines;
+        };
+
+        const importanceLabels = [
+            "APTX4869の真の目的（不老不死？）",
+            "ベルモットとボスの関係",
+            "組織の最終目的",
+            "ラムの最終的な正体と役割",
+            "烏丸の現在の状態（生存？AI？）"
+        ];
+
+        new Chart(document.getElementById('importanceChart'), {
+            type: 'bar',
+            data: {
+                labels: importanceLabels.map(wrapLabel),
+                datasets: [{
+                    label: 'プロットの重要度スコア',
+                    data: [98, 95, 90, 85, 88],
+                    backgroundColor: [PALETTE.red, PALETTE.orange, PALETTE.yellowOrange, PALETTE.yellow, PALETTE.green],
+                    borderColor: '#4A5568',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        grid: { color: GRID_COLOR },
+                        ticks: { color: FONT_COLOR }
+                    },
+                    y: {
+                        grid: { color: 'transparent' },
+                        ticks: { color: FONT_COLOR }
+                    }
+                },
+                 ...chartTooltipConfig
+            }
+        });
+
+        // Gemini API integration for generating theories
+        document.getElementById('generateTheoryBtn').addEventListener('click', async () => {
+            const characterName = document.getElementById('characterNameInput').value.trim();
+            const theoryOutput = document.getElementById('theoryOutput');
+            const theoryTitle = document.getElementById('theoryTitle');
+            const positiveReasonsList = document.getElementById('positiveReasons');
+            const negativeReasonsList = document.getElementById('negativeReasons');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const theoryContent = document.getElementById('theoryContent');
+
+            if (!characterName) {
+                theoryOutput.classList.remove('hidden');
+                theoryTitle.textContent = 'エラー';
+                positiveReasonsList.innerHTML = '';
+                negativeReasonsList.innerHTML = '<li>キャラクター名を入力してください。</li>';
+                theoryContent.classList.remove('hidden');
+                loadingIndicator.classList.add('hidden');
+                return;
+            }
+
+            theoryOutput.classList.remove('hidden');
+            theoryContent.classList.add('hidden');
+            loadingIndicator.classList.remove('hidden');
+            theoryTitle.textContent = `${characterName}が「あの方」だった場合`;
+            positiveReasonsList.innerHTML = '';
+            negativeReasonsList.innerHTML = '';
+
+            // LLMからの応答を解析し、表示する関数
+            const parseAndDisplayTheory = (text, positiveListElement, negativeListElement) => {
+                positiveListElement.innerHTML = '';
+                negativeListElement.innerHTML = '';
+
+                const lines = text.split('\n').filter(line => line.trim() !== '');
+
+                let currentSection = '';
+                let positiveCount = 0;
+                let negativeCount = 0;
+
+                lines.forEach(line => {
+                    const trimmedLine = line.trim();
+                    console.log('Processing line:', trimmedLine); // Debugging log
+
+                    if (trimmedLine.includes('肯定的な理由')) {
+                        currentSection = 'positive';
+                        console.log('Section set to positive'); // Debugging log
+                    } else if (trimmedLine.includes('否定的な理由')) {
+                        currentSection = 'negative';
+                        console.log('Section set to negative'); // Debugging log
+                    } else if (trimmedLine.startsWith('*')) { // Check for asterisk bullet point
+                        const listItem = document.createElement('li');
+                        // Remove the leading asterisk and any spaces/tabs after it
+                        listItem.textContent = trimmedLine.replace(/^\*\s*/, '').trim();
+
+                        if (currentSection === 'positive' && positiveCount < 3) {
+                            positiveListElement.appendChild(listItem);
+                            positiveCount++;
+                            console.log('Added positive item:', listItem.textContent); // Debugging log
+                        } else if (currentSection === 'negative' && negativeCount < 3) {
+                            negativeListElement.appendChild(listItem);
+                            negativeCount++;
+                            console.log('Added negative item:', listItem.textContent); // Debugging log
+                        }
+                    }
+                });
+
+                // もし何も表示されなかった場合のフォールバック（このログは通常トリガーされないはず）
+                if (positiveListElement.children.length === 0 && negativeListElement.children.length === 0) {
+                    const fallbackItem = document.createElement('li');
+                    fallbackItem.textContent = "（期待する形式で応答がありませんでした。生の応答:）" + text;
+                    positiveListElement.appendChild(fallbackItem);
+                    negativeListElement.innerHTML = '';
+                    console.log('Fallback triggered: No items added.'); // Debugging log
+                }
+            };
+
+
+            try {
+                let chatHistory = [];
+                // プロンプトをさらに具体的にして、箇条書き形式を強調
+                const prompt = `あなたは『名探偵コナン』の専門家であり、黒の組織のボスの正体について独自の理論を構築しています。以下のキャラクターがもし「あの方」だったとしたら、その肯定的な理由と否定的な理由をそれぞれ箇条書きで3点ずつ簡潔に記述してください。
+
+                キャラクター名：${characterName}
+
+                ---
+                肯定的な理由:
+                * * * 否定的な理由:
+                * * * ---
+                `;
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                
+                const payload = { contents: chatHistory };
+                const apiKey = ""; // ここは空のままでOKです。Canvas環境が自動的にAPIキーを提供します。
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                console.log('APIリクエストを開始します...');
+                console.log('Payload:', payload);
+                console.log('API URL:', apiUrl);
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                console.log('APIレスポンスを受信しました。');
+                console.log('Response Status:', response.status);
+                console.log('Response Status Text:', response.statusText);
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error('APIエラーレスポンス:', errorData);
+                    throw new Error(`APIリクエストが失敗しました: ${response.status} ${response.statusText} - ${JSON.stringify(errorData)}`);
+                }
+
+                const result = await response.json();
+                console.log('API結果:', result);
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    console.log('生成されたテキスト:', text); // 生成されたテキストをログに出力
+
+                    parseAndDisplayTheory(text, positiveReasonsList, negativeReasonsList);
+
+                } else {
+                    console.warn('API応答に有効なコンテンツが見つかりませんでした。', result);
+                    positiveReasonsList.innerHTML = '<li>考察を生成できませんでした。</li>';
+                    negativeReasonsList.innerHTML = '<li>APIからの有効な応答がありませんでした。</li>';
+                }
+            } catch (error) {
+                console.error('考察生成中にエラーが発生しました:', error);
+                positiveReasonsList.innerHTML = '<li>エラーが発生しました。</li>';
+                negativeReasonsList.innerHTML = `<li>詳細: ${error.message || '不明なエラー'}</li>`;
+            } finally {
+                loadingIndicator.classList.add('hidden');
+                theoryContent.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
